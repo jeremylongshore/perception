@@ -17,13 +17,13 @@ export default function About() {
             Perception cuts through the noise with 8 specialized AI agents that monitor, analyze,
             and deliver strategic intelligence from any source—automatically.
           </p>
-          <div className="flex gap-4 justify-center pt-4">
-            <button className="bg-zinc-900 hover:bg-zinc-800 text-white px-8 py-3 rounded-lg font-semibold transition-all shadow-sm">
-              Request Demo
-            </button>
-            <button className="bg-white hover:bg-zinc-50 text-zinc-900 border border-zinc-200 px-8 py-3 rounded-lg font-semibold transition-all">
-              View Documentation
-            </button>
+          <div className="flex gap-4 justify-center pt-4 flex-wrap">
+            <a href="/login" className="bg-zinc-900 hover:bg-zinc-800 text-white px-8 py-3 rounded-lg font-semibold transition-all shadow-sm inline-block">
+              Sign In
+            </a>
+            <a href="/dashboard" className="bg-white hover:bg-zinc-50 text-zinc-900 border border-zinc-200 px-8 py-3 rounded-lg font-semibold transition-all inline-block">
+              View Demo
+            </a>
           </div>
         </div>
       </div>
@@ -299,9 +299,14 @@ export default function About() {
             Perception is in private beta. We're working with select organizations to deploy
             custom news intelligence systems tailored to their strategic needs.
           </p>
-          <button className="bg-white text-zinc-900 px-10 py-4 rounded-lg font-semibold text-lg hover:bg-zinc-100 transition-all shadow-lg">
-            Request Early Access
-          </button>
+          <div className="flex gap-4 justify-center flex-wrap">
+            <a href="/dashboard" className="bg-white text-zinc-900 px-10 py-4 rounded-lg font-semibold text-lg hover:bg-zinc-100 transition-all shadow-lg inline-block">
+              Explore Platform
+            </a>
+            <a href="https://intentsolutions.io" target="_blank" rel="noopener noreferrer" className="bg-transparent border-2 border-white text-white px-10 py-4 rounded-lg font-semibold text-lg hover:bg-white/10 transition-all inline-block">
+              Contact Us
+            </a>
+          </div>
         </div>
       </div>
 

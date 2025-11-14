@@ -1,0 +1,11 @@
+source_id,name,type,url,category,enabled
+techcrunch_ai,TechCrunch AI,rss,https://techcrunch.com/category/artificial-intelligence/feed/,tech,true
+theverge_ai,The Verge AI,rss,https://www.theverge.com/rss/ai-artificial-intelligence/index.xml,tech,true
+bbc_technology,BBC Technology,rss,http://feeds.bbci.co.uk/news/technology/rss.xml,tech,true
+reuters_tech,Reuters Technology,rss,https://www.reutersagency.com/feed/?taxonomy=best-topics&post_type=best,tech,true
+mit_ai,MIT Technology Review AI,rss,https://www.technologyreview.com/topic/artificial-intelligence/feed,research,true
+wired_ai,Wired AI,rss,https://www.wired.com/feed/tag/ai/latest/rss,tech,true
+arstechnica_ai,Ars Technica AI,rss,https://feeds.arstechnica.com/arstechnica/technology-lab,tech,true
+venturebeat_ai,VentureBeat AI,rss,https://venturebeat.com/category/ai/feed/,tech,true
+techcrunch_general,TechCrunch,rss,https://techcrunch.com/feed/,tech,true
+hackernews,Hacker News,rss,https://news.ycombinator.com/rss,tech,true

@@ -2,28 +2,69 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Topics collection - read-only for now
-    match /topics_to_monitor/{topicId} {
-      allow read: if true;
-      allow write: if false; // Admin only via backend
+    // Helper function to check if user is authenticated
+    function isSignedIn() {
+      return request.auth != null;
     }
 
-    // Articles collection - read-only
+    // Helper function to check if user owns the resource
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Users collection - users can only access their own document
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+
+      // Topics subcollection - user-specific topics
+      match /topics/{topicId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Alerts subcollection - user-specific alerts
+      match /alerts/{alertId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // Sources collection - read for all authenticated, write for admins only
+    match /sources/{sourceId} {
+      allow read: if isSignedIn();
+      allow write: if false; // Backend/admin only
+    }
+
+    // Articles collection - read-only for authenticated users
     match /articles/{articleId} {
-      allow read: if true;
+      allow read: if isSignedIn();
       allow write: if false; // Written by agents only
     }
 
-    // Daily summaries - read-only
+    // Briefs collection - read-only for authenticated users
+    match /briefs/{briefId} {
+      allow read: if isSignedIn();
+      allow write: if false; // Written by agents only
+    }
+
+    // Ingestion runs - read-only for authenticated users
+    match /ingestion_runs/{runId} {
+      allow read: if isSignedIn();
+      allow write: if false; // Written by agents only
+    }
+
+    // Legacy collections (keep for backwards compatibility)
+    match /topics_to_monitor/{topicId} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
     match /daily_summaries/{summaryId} {
-      allow read: if true;
-      allow write: if false; // Written by agents only
+      allow read: if isSignedIn();
+      allow write: if false;
     }
 
-    // Run metrics - read-only
     match /run_metrics/{metricId} {
-      allow read: if true;
-      allow write: if false; // Written by agents only
+      allow read: if isSignedIn();
+      allow write: if false;
     }
   }
 }
