@@ -12,7 +12,7 @@
 
 Go to GitHub and create a new repository:
 - **Repository name:** `perception`
-- **Description:** "Executive-Level News Intelligence Without the Fluff"
+- **Description:** "Executive-Level News Intelligence Platform"
 - **Visibility:** ✅ **Public** (required for showcase)
 - **DO NOT** initialize with README, .gitignore, or license (we already have these)
 

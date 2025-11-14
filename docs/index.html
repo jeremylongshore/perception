@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Executive-Level News Intelligence Platform powered by Vertex AI Agent Engine">
+    <title>Perception - AI News Intelligence Platform</title>
+
+    <!-- Mermaid for diagrams -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#18181b',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#27272a',
+                lineColor: '#52525b',
+                secondaryColor: '#f4f4f5',
+                tertiaryColor: '#e4e4e7',
+                background: '#ffffff',
+                mainBkg: '#fafafa',
+                secondBkg: '#f4f4f5',
+                clusterBkg: '#fafafa',
+                clusterBorder: '#e4e4e7',
+                titleColor: '#18181b',
+                edgeLabelBackground: '#ffffff',
+                nodeTextColor: '#18181b',
+                nodeBorder: '#27272a'
+            }
+        });
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Matching Firebase Dashboard Colors */
+            --primary: #18181b;        /* zinc-900 */
+            --primary-dark: #27272a;   /* zinc-800 */
+            --zinc-50: #fafafa;
+            --zinc-100: #f4f4f5;
+            --zinc-200: #e4e4e7;
+            --zinc-300: #d4d4d8;
+            --zinc-400: #a1a1aa;
+            --zinc-500: #71717a;
+            --zinc-600: #52525b;
+            --zinc-700: #3f3f46;
+            --zinc-800: #27272a;
+            --zinc-900: #18181b;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--zinc-900);
+            background: white;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.25rem;
+            color: var(--zinc-200);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        section {
+            margin: 4rem 0;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            border-bottom: 2px solid var(--zinc-200);
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            color: var(--zinc-800);
+            margin: 2rem 0 1rem 0;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--zinc-700);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: var(--zinc-50);
+            border: 1px solid var(--zinc-200);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-color: var(--zinc-300);
+        }
+
+        .feature-card h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s ease;
+            margin: 0.5rem;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--zinc-200);
+        }
+
+        .btn-secondary:hover {
+            background: var(--zinc-50);
+        }
+
+        .mermaid-container {
+            background: var(--zinc-50);
+            padding: 2rem;
+            border-radius: 0.5rem;
+            margin: 2rem 0;
+            border: 1px solid var(--zinc-200);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: var(--zinc-50);
+            border-radius: 0.5rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: var(--zinc-600);
+            font-size: 0.9rem;
+        }
+
+        code {
+            background: var(--zinc-100);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            color: var(--zinc-800);
+        }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        footer a {
+            color: var(--zinc-300);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🔍 Perception</h1>
+        <p>Executive-Level News Intelligence Platform</p>
+        <div style="margin-top: 2rem;">
+            <a href="https://github.com/jeremylongshore/perception" class="btn">View on GitHub</a>
+            <a href="https://perception-with-intent.web.app" class="btn btn-secondary">Live Dashboard</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <section id="overview">
+            <h2>What is Perception?</h2>
+            <p>
+                Perception is an AI-powered news intelligence platform that transforms information overload into actionable insights.
+                Built on Google's Vertex AI Agent Engine with 8 specialized AI agents, it monitors news sources, analyzes content,
+                and delivers strategic intelligence that actually matters.
+            </p>
+
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">Specialized AI Agents</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">~$70</div>
+                    <div class="stat-label">Monthly Cost</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Automated Monitoring</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label">Articles Daily</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture">
+            <h2>System Architecture</h2>
+            <p>Perception uses a clean three-layer architecture: Firebase for humans, Agents for thinking, and data in Firestore/BigQuery.</p>
+
+            <div class="mermaid-container">
+                <pre class="mermaid">
+graph TB
+    subgraph "Human Interface"
+        Dashboard[Firebase Dashboard<br/>React SPA]
+        API[API Gateway<br/>Cloud Functions]
+    end
+
+    subgraph "Agent Brain - Vertex AI Engine"
+        A0[Agent 0: Root Orchestrator<br/>Editor-in-Chief]
+        A1[Agent 1: Topic Manager]
+        A2[Agent 2: News Aggregator]
+        A3[Agent 3: Relevance Scorer]
+        A4[Agent 4: Article Analyst]
+        A5[Agent 5: Daily Synthesizer]
+        A6[Agent 6: Validator]
+        A7[Agent 7: Storage Manager]
+
+        A0 -->|A2A Protocol| A1
+        A0 -->|A2A Protocol| A2
+        A0 -->|A2A Protocol| A3
+        A0 -->|A2A Protocol| A4
+        A0 -->|A2A Protocol| A5
+        A0 -->|A2A Protocol| A6
+        A0 -->|A2A Protocol| A7
+    end
+
+    subgraph "Data Layer"
+        Firestore[(Firestore)]
+        BigQuery[(BigQuery)]
+    end
+
+    Dashboard --> A0
+    API --> A0
+    A7 --> Firestore
+    A7 --> BigQuery
+
+    style A0 fill:#18181b,stroke:#27272a,stroke-width:2px,color:#fff
+    style Dashboard fill:#f4f4f5,stroke:#27272a,stroke-width:2px
+    style Firestore fill:#f4f4f5,stroke:#27272a,stroke-width:2px
+    style BigQuery fill:#f4f4f5,stroke:#27272a,stroke-width:2px
+                </pre>
+            </div>
+        </section>
+
+        <section id="workflow">
+            <h2>Daily Intelligence Workflow</h2>
+            <p>Every morning at 7:30 AM CST, Perception automatically gathers and analyzes news to deliver strategic insights.</p>
+
+            <div class="mermaid-container">
+                <pre class="mermaid">
+sequenceDiagram
+    participant Scheduler as Cloud Scheduler
+    participant A0 as Root Orchestrator
+    participant A1 as Topic Manager
+    participant A2 as News Aggregator
+    participant A3 as Relevance Scorer
+    participant A4 as Article Analyst
+    participant A5 as Daily Synthesizer
+    participant A7 as Storage Manager
+    participant Dashboard as Firebase Dashboard
+
+    Scheduler->>A0: Wake up! (7:30 AM CST)
+    A0->>A1: What topics are we tracking?
+    A1-->>A0: List of active topics
+    A0->>A2: Fetch news from all sources
+    A2-->>A0: 100+ articles collected
+    A0->>A3: Score these articles
+    A3-->>A0: Ranked by relevance
+    A0->>A4: Analyze top 50 articles
+    A4-->>A0: Summaries + tags + insights
+    A0->>A5: Create daily brief
+    A5-->>A0: Executive summary
+    A0->>A7: Save everything
+    A7->>Dashboard: New intelligence available
+    Dashboard-->>A0: ✅ Brief delivered
+                </pre>
+            </div>
+        </section>
+
+        <section id="agents">
+            <h2>The 8 Specialized Agents</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>Agent 0: Root Orchestrator</h3>
+                    <p>The boss. Coordinates all sub-agents via A2A Protocol to ensure smooth daily workflow execution.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3>Agent 1: Topic Manager</h3>
+                    <p>Manages tracked topics and keywords. Reads/writes to Firestore <code>topics_to_monitor</code> collection.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3>Agent 2: News Aggregator</h3>
+                    <p>Fetches news from RSS feeds and APIs. Collects 100+ articles daily from configured sources.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3>Agent 3: Relevance Scorer</h3>
+                    <p>Scores articles for importance using custom algorithms. Outputs relevance scores (1-10).</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3>Agent 4: Article Analyst</h3>
+                    <p>AI-powered analysis using Gemini 2.0 Flash. Generates summaries, tags, and strategic insights.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3>Agent 5: Daily Synthesizer</h3>
+                    <p>Creates executive briefs from analyzed articles. Delivers "what actually matters" each day.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3>Agent 6: Validator</h3>
+                    <p>Ensures data quality through schema validation. Keeps everything clean and consistent.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3>Agent 7: Storage Manager</h3>
+                    <p>Saves data to Firestore and BigQuery. Manages <code>articles</code>, <code>daily_summaries</code>, and metrics.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="tech-stack">
+            <h2>Technology Stack</h2>
+
+            <div class="mermaid-container">
+                <pre class="mermaid">
+graph LR
+    subgraph Frontend
+        React[React 18]
+        Vite[Vite]
+        TW[Tailwind CSS]
+    end
+
+    subgraph Backend
+        ADK[Google ADK]
+        Vertex[Vertex AI<br/>Agent Engine]
+        A2A[A2A Protocol]
+        Gemini[Gemini 2.0 Flash]
+    end
+
+    subgraph Data
+        Firebase[Firebase<br/>Hosting]
+        Firestore[Firestore]
+        BQ[BigQuery]
+    end
+
+    subgraph DevOps
+        GHA[GitHub Actions]
+        WIF[Workload Identity<br/>Federation]
+        TF[Terraform]
+    end
+
+    React --> Firebase
+    ADK --> Vertex
+    Vertex --> A2A
+    A2A --> Gemini
+    Vertex --> Firestore
+    Vertex --> BQ
+    GHA --> WIF
+    WIF --> Vertex
+    TF --> Vertex
+
+    style ADK fill:#18181b,stroke:#27272a,stroke-width:2px,color:#fff
+    style Vertex fill:#18181b,stroke:#27272a,stroke-width:2px,color:#fff
+                </pre>
+            </div>
+        </section>
+
+        <section id="features">
+            <h2>Key Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>✅ Automated Intelligence</h3>
+                    <p>Daily news monitoring and analysis with zero manual intervention.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3>🤖 8 AI Agents</h3>
+                    <p>Specialized agents working together via Google's A2A Protocol.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3>📊 Real-time Dashboard</h3>
+                    <p>Firebase-powered dashboard with live updates and analytics.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3>💰 Cost Efficient</h3>
+                    <p>Only ~$70/month for executive-level intelligence.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3>🔒 Production Ready</h3>
+                    <p>CI/CD via GitHub Actions with Workload Identity Federation.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3>📈 Scalable</h3>
+                    <p>Built on Google Cloud with auto-scaling infrastructure.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="get-started">
+            <h2>Get Started</h2>
+            <p>Clone the repository and get running in minutes:</p>
+
+            <div class="feature-card" style="background: var(--zinc-900); color: white;">
+                <code style="background: transparent; color: var(--zinc-200); display: block; padding: 1rem;">
+                    # Clone repository<br/>
+                    git clone https://github.com/jeremylongshore/perception.git<br/>
+                    cd perception<br/><br/>
+                    # Install dependencies<br/>
+                    make install<br/><br/>
+                    # Run locally<br/>
+                    make dev<br/><br/>
+                    # Deploy to production<br/>
+                    git push origin main
+                </code>
+            </div>
+
+            <p style="margin-top: 2rem;">
+                <a href="https://github.com/jeremylongshore/perception#-quick-start" class="btn">Full Documentation</a>
+                <a href="https://github.com/jeremylongshore/perception/blob/main/CLAUDE.md" class="btn btn-secondary">Architecture Guide</a>
+            </p>
+        </section>
+    </div>
+
+    <footer>
+        <p>
+            Built with <a href="https://github.com/google/adk-python">Google ADK</a> and
+            <a href="https://cloud.google.com/vertex-ai/docs/agents">Vertex AI Agent Engine</a>
+        </p>
+        <p style="margin-top: 1rem; color: var(--zinc-400);">
+            <a href="https://github.com/jeremylongshore/perception">GitHub</a> •
+            <a href="https://perception-with-intent.web.app">Dashboard</a> •
+            <a href="https://jeremylongshore.com">Jeremy Longshore</a>
+        </p>
+    </footer>
+</body>
+</html>

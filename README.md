@@ -2,7 +2,7 @@
 
 # 🔍 Perception
 
-**Executive-Level News Intelligence Without the Fluff**
+**Executive-Level News Intelligence Platform**
 
 [![Google ADK](https://img.shields.io/badge/Google-ADK-4285F4?style=for-the-badge&logo=google-cloud)](https://github.com/google/adk-python)
 [![Vertex AI](https://img.shields.io/badge/Vertex%20AI-Agent%20Engine-4285F4?style=for-the-badge&logo=google-cloud)](https://cloud.google.com/vertex-ai/generative-ai/docs/agents)
