@@ -43,7 +43,7 @@ Error: failed to generate Google Cloud federated token for
 - ✅ Dashboard built (dashboard/dist/)
 
 ### Repository
-- ✅ Public GitHub repo: https://github.com/jeremylongshore/perception
+- ✅ Public GitHub repo: https://github.com/jeremylongshore/perception-with-intent
 - ✅ GitHub Pages enabled: https://jeremylongshore.github.io/perception/
 - ✅ All code pushed and versioned
 
@@ -95,7 +95,7 @@ gcloud iam service-accounts add-iam-policy-binding \
   --member="principalSet://iam.googleapis.com/projects/${PROJECT_NUMBER}/locations/global/workloadIdentityPools/github-pool/attribute.repository/jeremylongshore/perception"
 
 # Step 6: Add GitHub Secrets
-# Go to: https://github.com/jeremylongshore/perception/settings/secrets/actions
+# Go to: https://github.com/jeremylongshore/perception-with-intent/settings/secrets/actions
 # Add these secrets:
 #   GCP_WORKLOAD_IDENTITY_PROVIDER = projects/348724539390/locations/global/workloadIdentityPools/github-pool/providers/github-provider
 #   GCP_SERVICE_ACCOUNT_EMAIL = perception-deployer@perception-with-intent.iam.gserviceaccount.com
@@ -167,12 +167,12 @@ export VERTEX_AGENT_ENGINE_ID=perception-agent-engine
 
 | Component | Status | URL/Location |
 |-----------|--------|--------------|
-| **GitHub Repo** | ✅ Public | https://github.com/jeremylongshore/perception |
+| **GitHub Repo** | ✅ Public | https://github.com/jeremylongshore/perception-with-intent |
 | **GitHub Pages** | ✅ Live | https://jeremylongshore.github.io/perception/ |
 | **Firebase Dashboard** | ❌ Site Not Found | https://perception-with-intent.web.app |
 | **Vertex AI Agents** | ❌ Not Deployed | N/A |
 | **WIF Authentication** | ❌ Not Configured | N/A |
-| **GitHub Actions** | ❌ Failing | [View Runs](https://github.com/jeremylongshore/perception/actions) |
+| **GitHub Actions** | ❌ Failing | [View Runs](https://github.com/jeremylongshore/perception-with-intent/actions) |
 
 ## 💡 Next Steps
 

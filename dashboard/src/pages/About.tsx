@@ -327,7 +327,7 @@ export default function About() {
                 Learn More →
               </a>
               <a
-                href="https://github.com/jeremylongshore/perception"
+                href="https://github.com/jeremylongshore/perception-with-intent"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-zinc-600 hover:text-zinc-900 transition-colors"
