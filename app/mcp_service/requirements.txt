@@ -1,0 +1,37 @@
+# Perception MCP Service Dependencies
+
+# FastAPI framework
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+
+# HTTP client for calling external APIs and RSS feeds
+httpx==0.26.0
+
+# RSS feed parsing
+feedparser==6.0.11
+
+# Firestore client
+google-cloud-firestore==2.14.0
+
+# Vertex AI for Gemini calls
+google-cloud-aiplatform==1.40.0
+
+# Secret Manager for API keys
+google-cloud-secret-manager==2.17.0
+
+# OpenTelemetry (Phase 5+)
+opentelemetry-api==1.22.0
+opentelemetry-sdk==1.22.0
+opentelemetry-instrumentation-fastapi==0.43b0
+opentelemetry-exporter-gcp-trace==1.6.0
+
+# Web scraping (Phase 5+)
+beautifulsoup4==4.12.3
+lxml==5.1.0
+
+# Slack notifications (Phase 6+)
+slack-sdk==3.26.2
+
+# Utilities
+python-dateutil==2.8.2
