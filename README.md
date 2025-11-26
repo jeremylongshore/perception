@@ -198,16 +198,25 @@ Cloud Scheduler ───> Pub/Sub ───> Root Orchestrator
 
 ## 🚀 Deployment
 
-### Phase 1: Public Showcase (Current)
+### Current Status: v0.3.0 (2025-11-15)
 
-What's shipping now:
-- ✅ Public dashboard (no auth required)
-- ✅ Example topics (AI, tech, business, sports)
-- ✅ Live intelligence feed
-- ✅ Company branding
-- ✅ Daily executive briefs
+**What's Deployed:**
+- ✅ **MCP Service on Cloud Run** - `https://perception-mcp-348724539390.us-central1.run.app`
+  - Real RSS fetching validated (5+ articles, 270ms latency)
+  - Cloud Logging operational
+  - Health endpoint verified
+- ✅ **8-Agent System Complete** - Agent 0-7 + Tech Editor
+  - E2E ingestion pipeline built
+  - Firestore batch operations working
+- ✅ **Infrastructure Ready**
+  - Terraform provisioned
+  - WIF configured (GitHub → GCP keyless auth)
+  - Firebase dashboard with Auth enabled
 
-**Timeline:** 3-4 days to launch
+**What's Pending:**
+- ⏳ Agent Engine deployment (scripts ready)
+- ⏳ E2E ingestion run (awaiting Agent Engine)
+- ⏳ Dashboard data integration (wire Firestore to UI)
 
 ### Phase 2: SaaS Platform (Future)
 
@@ -222,23 +231,35 @@ Coming next:
 
 ### Deploy Commands
 
+**IMPORTANT:** All MCP testing happens in the cloud. NO localhost MCP servers.
+
 ```bash
-# Local development (chill mode)
+# Local agent development ONLY (agents run anywhere)
 make dev
-# Serves at http://localhost:8080
+# Serves agents at http://localhost:8080 (NOT the MCP)
 
-# Test specific agent
-cd app/perception_agent
-pytest tests/test_agent_1.py
+# Deploy MCP to Cloud Run (the ONLY valid MCP runtime)
+gcloud run deploy perception-mcp \
+  --source app/mcp_service \
+  --region us-central1 \
+  --project perception-with-intent
 
-# Deploy everything (production mode)
-make deploy
-# GitHub Actions does the rest
+# Deploy Agent Engine to Vertex AI
+export VERTEX_PROJECT_ID=perception-with-intent
+export VERTEX_LOCATION=us-central1
+./scripts/deploy_agent_engine.sh
 
-# Deploy just dashboard
+# Run E2E ingestion test (after Agent Engine deployed)
+export VERTEX_AGENT_ID=<from-gcloud-agents-list>
+./scripts/run_ingestion_via_agent_engine.sh
+
+# Deploy dashboard to Firebase
 cd dashboard
 npm run build
 firebase deploy --only hosting
+
+# Verify MCP is alive
+curl https://perception-mcp-348724539390.us-central1.run.app/health
 ```
 
 ---
@@ -269,34 +290,32 @@ firebase deploy --only hosting
 
 ## 🛠️ Development
 
-### Progressive Hardening
+### Cloud-Only MCP Philosophy
 
-We develop loose, deploy tight. Three levels of enforcement:
+**CRITICAL:** All testing and deployment happens in the cloud. NO localhost MCP servers.
 
-**Level 1: Local Dev** (Break things freely)
-```bash
-✓ In-memory everything
-✓ No cloud dependencies
-✓ Hot reload enabled
-✗ No enforcement rules
+```
+Push to GitHub → CI/CD → Deploy to STAGING Cloud Run → Test in Cloud → Promote to PRODUCTION
 ```
 
-**Level 2: Staging** (Test with caution)
-```bash
-✓ Real Firestore
-✓ Drift warnings (don't block)
-✓ Real MCPs
-✗ No production data
-```
+**What This Means:**
+- ✅ **Agents:** Local development with `make dev` is OK (agents run anywhere)
+- ❌ **MCP Service:** NO local MCP servers - Cloud Run is the ONLY valid runtime
+- ✅ **Testing:** All E2E tests use staging Cloud Run URLs
+- ✅ **MCP URL:** `https://perception-mcp-348724539390.us-central1.run.app`
 
-**Level 3: Production** (Zero tolerance)
-```bash
-✓ Full Bob's Brain enforcement
-✓ CI-only deploys
-✓ Drift detection blocks everything
-✓ SPIFFE IDs required
-✓ Zero downtime updates
-```
+**Staging (Current):**
+- MCP on Cloud Run with `--ingress all` for testing
+- Firestore production database
+- Cloud Logging enabled
+- Real RSS feeds, real data
+
+**Production (Future):**
+- Full Bob's Brain rules (R1-R10)
+- CI-only deployments (GitHub Actions + WIF)
+- `--ingress internal-and-cloud-load-balancing`
+- SPIFFE IDs everywhere
+- Drift detection blocks everything
 
 ### Key Commands
 
@@ -320,7 +339,7 @@ make check-auth       # Verify GCP auth
 ### Testing
 
 ```bash
-# Run all tests
+# Run unit tests locally
 pytest
 
 # Test specific agent
@@ -329,8 +348,19 @@ pytest tests/agents/test_article_analyst.py
 # Test with coverage
 pytest --cov=app --cov-report=html
 
-# Test MCP endpoint
-curl http://localhost:8081/mcp/tools/fetch_rss_feed
+# Test MCP endpoint (Cloud Run ONLY - NO localhost)
+curl https://perception-mcp-348724539390.us-central1.run.app/health
+
+# Test RSS fetching (real data)
+curl -X POST https://perception-mcp-348724539390.us-central1.run.app/mcp/tools/fetch_rss_feed \
+  -H "Content-Type: application/json" \
+  -d '{"feed_id": "hackernews"}'
+
+# View MCP logs in Cloud Logging
+gcloud logging read \
+  'resource.type="cloud_run_revision" AND resource.labels.service_name="perception-mcp"' \
+  --project=perception-with-intent \
+  --limit=20
 ```
 
 ---
@@ -404,11 +434,20 @@ AGENT_SPIFFE_ID=spiffe://perception/agent/[name]
 ### "It's broken!"
 
 ```bash
-# Check agent logs
-gcloud logging read "resource.type=cloud_run_revision" --limit=50
+# Check MCP service logs
+gcloud logging read \
+  'resource.type="cloud_run_revision" AND resource.labels.service_name="perception-mcp"' \
+  --project=perception-with-intent \
+  --limit=50
 
 # Test MCP health
-curl https://storage-mcp-[hash]-uc.a.run.app/health
+curl https://perception-mcp-348724539390.us-central1.run.app/health
+
+# Check Agent Engine logs
+gcloud logging read \
+  'resource.type="aiplatform.googleapis.com/Agent"' \
+  --project=perception-with-intent \
+  --limit=20
 
 # Verify Firestore
 firebase firestore:indexes
@@ -466,9 +505,19 @@ Simple. Powerful. Ships.
 
 ## 📚 Documentation
 
-- **[CLAUDE.md](CLAUDE.md)** - Complete system overview
+### Project Documentation
+- **[CLAUDE.md](CLAUDE.md)** - Complete system overview & current architecture
+- **[CHANGELOG.md](CHANGELOG.md)** - Version history (v0.3.0, v0.2.0, v0.1.0)
 - **[AGENTS-DEPLOYMENT.md](AGENTS-DEPLOYMENT.md)** - Agent architecture details
 - **[000-docs/](000-docs/)** - All technical documentation
+
+### Key Technical Docs
+- **[6767-AT-ARCH-observability-and-monitoring.md](000-docs/6767-AT-ARCH-observability-and-monitoring.md)** - Monitoring stack
+- **[6767-OD-GUID-agent-engine-deploy.md](000-docs/6767-OD-GUID-agent-engine-deploy.md)** - Agent Engine deployment
+- **[6767-PP-PLAN-release-log.md](000-docs/6767-PP-PLAN-release-log.md)** - Release tracking
+- **[041-AA-REPT-phase-E2E-agent-engine-deployment.md](000-docs/041-AA-REPT-phase-E2E-agent-engine-deployment.md)** - Latest AAR
+
+### External Resources
 - **[Google ADK Docs](https://github.com/google/adk-python)** - Official ADK documentation
 - **[Vertex AI Agents](https://cloud.google.com/vertex-ai/docs/agents)** - Agent Engine documentation
 
@@ -495,17 +544,34 @@ PRs welcome if they:
 
 ## 📊 Status
 
-**Current:** Phase 1 - Public Showcase
+**Version:** v0.3.0 (2025-11-15)
 
-- ✅ Infrastructure deployed
-- ✅ WIF auth configured
-- ✅ 8 agents implemented
-- ✅ Agent orchestration via A2A
-- ✅ Dashboard scaffolded
-- 🔄 MCPs in development (1-2 days)
-- 🔄 Final integration testing
+**What's Working:**
+- ✅ **MCP Service Deployed to Cloud Run**
+  - Service URL: `https://perception-mcp-348724539390.us-central1.run.app`
+  - Real RSS fetching validated (5+ articles, 270ms)
+  - Cloud Logging operational, zero ERROR logs
+- ✅ **8-Agent System Complete**
+  - Agent 0-7 + Technology Desk Editor
+  - E2E ingestion pipeline built
+  - Firestore batch operations working
+  - A2A Protocol integration ready
+- ✅ **Infrastructure Ready**
+  - Terraform provisioned
+  - WIF configured (GitHub → GCP keyless auth)
+  - Firebase dashboard with Auth enabled
+- ✅ **Documentation Complete**
+  - Observability guide, deployment guide
+  - Release log tracking 3 versions
+  - First AAR created
 
-**Next:** Launch, then Phase 2 (SaaS)
+**What's Pending:**
+- ⏳ Agent Engine deployment (scripts ready, needs manual trigger)
+- ⏳ E2E ingestion run (awaiting Agent Engine deployment)
+- ⏳ MCP_BASE_URL configuration (research needed)
+- ⏳ Dashboard data integration (wire Firestore to UI)
+
+**Next Phase:** v0.4.0 - Dashboard integration with live Firestore data
 
 ---
 
