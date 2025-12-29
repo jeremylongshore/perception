@@ -33,7 +33,7 @@ logging.basicConfig(
 app = App()
 
 # Load root orchestrator (Agent 0) with all sub-agents
-root_agent = Agent.from_config_file("app/perception_agent/agents/agent_0_root_orchestrator.yaml")
+root_agent = Agent.from_config_file("perception_app/perception_agent/agents/agent_0_orchestrator.yaml")
 app.register_agent(root_agent)
 
 # The root agent automatically loads all sub-agents via config references

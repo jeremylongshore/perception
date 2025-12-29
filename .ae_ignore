@@ -1,0 +1,49 @@
+# Agent Engine Deploy Ignore File
+# Patterns use fnmatch (shell-style wildcards)
+
+# Beads task tracking (contains socket files)
+.beads
+*.sock
+
+# Virtual environment
+.venv
+
+# Git
+.git
+
+# IDE
+.idea
+.vscode
+
+# Build artifacts
+__pycache__
+*.pyc
+*.pyo
+*.egg-info
+dist
+build
+
+# Test artifacts
+.pytest_cache
+.coverage
+htmlcov
+
+# Local configs
+.env.local
+*.local
+
+# Documentation
+000-docs
+
+# Dashboard (separate deployment)
+dashboard
+
+# Terraform
+.terraform
+*.tfstate
+*.tfstate.*
+
+# Temporary files
+*.tmp
+*.swp
+*~
