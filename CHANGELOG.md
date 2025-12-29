@@ -10,8 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.4.0] - 2025-12-29
 
 ### Added
-- **Massive RSS Feed Expansion** (15 → 89 verified active feeds)
-  - 19 categories: sports, automotive, EV, trucking, heavy equipment, AI, tech, engineering, security, business, crypto, world, science, repair (electronics/marine/RV/motorcycle/agricultural)
+- **Massive RSS Feed Expansion** (15 → 128 verified active feeds)
+  - 22 categories: sports, automotive, EV, trucking, heavy equipment, AI, tech, engineering, security, business, crypto, world, science, repair (5 sub-categories), saas/dev tools, AI companies, infrastructure
+  - Brex Top 100 SaaS companies research: 39 new feeds from fastest-growing startups
   - All feeds tested and verified active with feedparser
   - GitHub RSS repository reference document (3,200+ curated feeds)
 - **Cyberpunk Terminal UI** (`perception_tui.py`)
