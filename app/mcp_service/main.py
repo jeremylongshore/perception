@@ -10,8 +10,8 @@ Phase 4 Status: SCAFFOLDING ONLY
 - TODO comments mark where real implementations go
 
 Deployment:
-- Local: uvicorn main:app --reload --port 8080
-- Cloud Run: perception-mcp (internal-only ingress)
+- Local: uvicorn main:app --reload --port 8081
+- Cloud Run: gcr.io/perception-with-intent/mcp-service:latest
 """
 
 import logging
@@ -171,7 +171,7 @@ if __name__ == "__main__":
     uvicorn.run(
         "main:app",
         host="0.0.0.0",
-        port=8080,
+        port=8081,
         reload=True,
         log_level="info"
     )

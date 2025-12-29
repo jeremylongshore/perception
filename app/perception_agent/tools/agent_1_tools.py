@@ -17,9 +17,7 @@ from pathlib import Path
 logger = logging.getLogger(__name__)
 
 # MCP service base URL (configurable via environment)
-# Local dev: http://localhost:8080
-# Production: https://perception-mcp-<hash>-uc.a.run.app (set via Agent Engine runtime config)
-MCP_BASE_URL = os.getenv("MCP_BASE_URL", "http://localhost:8080")
+MCP_BASE_URL = os.getenv("MCP_BASE_URL", "http://localhost:8081")
 
 
 def load_sources_from_csv() -> List[Dict[str, Any]]:

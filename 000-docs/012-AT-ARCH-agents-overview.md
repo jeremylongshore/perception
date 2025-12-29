@@ -384,57 +384,6 @@ Perception With Intent uses **8 distinct agents** deployed within a single Verte
 
 ---
 
-## Agent 8 – Technology Desk Editor
-
-- **agent_id:** `perception_tech_editor`
-- **Role:** First vertical section editor that curates and enhances the Technology section of daily briefs. Demonstrates the pattern for future section editors (Business Desk, Politics Desk, etc.).
-- **Inputs:**
-  - From Orchestrator (via Agent 4):
-    - Scored articles with section tags
-    - Initial brief structure from Brief Writer
-  - Configuration:
-    - Section-specific curation rules (max articles, focus areas)
-- **Outputs:**
-  - Returns to Orchestrator:
-    - Enhanced Technology section with:
-      - Curated top tech articles (typically 5)
-      - Custom section headline
-      - Thematic analysis
-      - Editor metadata
-  - Replaces generic Tech section in brief with curated version
-- **Tools Used (logical names):**
-  - `agent_8_tools` – technology curation helpers:
-    - `select_top_tech_articles` – filter and rank tech articles
-    - `propose_tech_headline` – generate compelling section headline
-    - `enhance_tech_section` – build enhanced section object
-- **Trigger:**
-  - Invoked by Orchestrator after Brief Writer (Agent 4)
-  - Only runs if Tech section exists in brief
-- **Example Instruction Block (YAML style):**
-  ```yaml
-  instruction: |
-    You are the Technology Desk Editor for Perception With Intent.
-
-    Your role is to curate and enhance the Technology section:
-    1. Review articles tagged with "Tech" section from ranking.
-    2. Select the top technology articles that matter to executives.
-    3. Propose a compelling headline for the Technology section.
-    4. Identify emerging trends or patterns in tech coverage.
-    5. Return enhanced section to Orchestrator.
-
-    Focus on: AI/ML, cloud computing, emerging tech, tech policy, major launches/acquisitions.
-    Keep tone professional and prioritize strategic relevance.
-  ```
-
-**Future Section Editors:**
-- Agent 9: Business Desk Editor
-- Agent 10: Politics Desk Editor
-- Agent 11: General News Editor
-
-This pattern allows each vertical to have domain expertise and editorial control while maintaining consistency through the orchestrator.
-
----
-
 ## Agent Communication Flow
 
 ```
@@ -445,7 +394,6 @@ Agent 0 (Orchestrator)
     ├──→ Agent 1 (Source Harvester) → Returns raw articles
     ├──→ Agent 3 (Relevance & Ranking) → Returns scored articles
     ├──→ Agent 4 (Brief Writer) → Returns daily brief
-    ├──→ Agent 8 (Tech Desk Editor) → Returns enhanced Tech section
     ├──→ Agent 5 (Alert & Anomaly) → Returns triggered alerts
     ├──→ Agent 6 (Validator) → Returns validation report
     └──→ Agent 7 (Storage Manager) → Persists to Firestore
@@ -479,8 +427,7 @@ app/perception_agent/
 │   ├── agent_4_brief_writer.yaml          # Generates briefs
 │   ├── agent_5_alert_anomaly.yaml         # Detects alerts
 │   ├── agent_6_validator.yaml             # Validates data
-│   ├── agent_7_storage_manager.yaml       # Persists to Firestore
-│   └── agent_8_tech_editor.yaml           # Technology Desk Editor
+│   └── agent_7_storage_manager.yaml       # Persists to Firestore
 │
 ├── tools/
 │   ├── agent_0_tools.py                   # Orchestration helpers
@@ -490,8 +437,7 @@ app/perception_agent/
 │   ├── agent_4_tools.py                   # Brief generation
 │   ├── agent_5_tools.py                   # Alert detection
 │   ├── agent_6_tools.py                   # Validation helpers
-│   ├── agent_7_tools.py                   # Firestore writes
-│   └── agent_8_tools.py                   # Tech section curation
+│   └── agent_7_tools.py                   # Firestore writes
 │
 └── prompts/
     └── (Optional: agent-specific prompt templates)
@@ -499,7 +445,6 @@ app/perception_agent/
 
 ---
 
-**Last Updated:** 2025-11-14 (E2E Phase)
-**Phase:** E2E (E2E Ingestion Happy Path + First Section Editor)
-**Status:** Production-ready E2E pipeline with Agent 8 (Technology Desk Editor) implemented
-**Next:** Additional section editors (Business, Politics) + AAR/AAN capabilities
+**Last Updated:** 2025-11-14
+**Phase:** 3 (Agent Cards Defined)
+**Next:** Phase 4 (MCP Tool Architecture + First Real Tool Wiring)
