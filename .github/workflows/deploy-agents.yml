@@ -61,23 +61,33 @@ jobs:
 
       - name: Deploy Agent 0 (Root Orchestrator)
         run: |
-          adk deploy agent_engine \
+          set -o pipefail
+          output=$(adk deploy agent_engine \
             --project=perception-with-intent \
             --region=us-central1 \
             --staging_bucket=gs://perception-staging \
             --display_name="Perception Root Orchestrator" \
             --trace_to_cloud \
-            perception_app/perception_agent/agents/agent_0_orchestrator
+            perception_app/perception_agent/agents/agent_0_orchestrator 2>&1 | tee /dev/stderr)
+          if echo "$output" | grep -q "Deploy failed:"; then
+            echo "::error::Agent Engine deployment failed"
+            exit 1
+          fi
 
       - name: Deploy Agent 1 (Source Harvester)
         run: |
-          adk deploy agent_engine \
+          set -o pipefail
+          output=$(adk deploy agent_engine \
             --project=perception-with-intent \
             --region=us-central1 \
             --staging_bucket=gs://perception-staging \
             --display_name="Perception Source Harvester" \
             --trace_to_cloud \
-            perception_app/perception_agent/agents/agent_1_source_harvester
+            perception_app/perception_agent/agents/agent_1_source_harvester 2>&1 | tee /dev/stderr)
+          if echo "$output" | grep -q "Deploy failed:"; then
+            echo "::error::Agent Engine deployment failed"
+            exit 1
+          fi
 
       - name: Deployment Summary
         run: |
