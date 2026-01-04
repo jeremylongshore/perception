@@ -53,6 +53,10 @@ dmypy.json
 
 # GCP Credentials (NEVER commit these)
 *.json
+!package.json
+!package-lock.json
+!tsconfig.json
+!tsconfig.node.json
 !app/perception_agent/config/*.yaml
 *.key
 *.pem

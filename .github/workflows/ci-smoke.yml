@@ -42,7 +42,8 @@ jobs:
 
       - name: Test MCP service imports
         run: |
-          python -c "from perception_app.mcp_service.main import app; print('✅ MCP service imports OK')"
+          cd perception_app/mcp_service
+          python -c "from main import app; print('✅ MCP service imports OK')"
 
       - name: Validate MCP service can start (--help)
         run: |
