@@ -62,16 +62,16 @@ jobs:
           gcloud config list project
 
       - name: Deploy to Agent Engine
-        working-directory: perception_app/perception_agent
+        working-directory: perception_app/perception_agent/agents
         run: |
           echo "Deploying Perception to Vertex AI Agent Engine..."
           echo "  Project: perception-with-intent"
           echo "  Region: us-central1"
-          echo "  Agent: agents/agent_0_orchestrator"
+          echo "  Agent: agent_0_orchestrator"
           echo "  Working dir: $(pwd)"
           echo ""
 
-          adk deploy agent_engine agents/agent_0_orchestrator \
+          adk deploy agent_engine agent_0_orchestrator \
             --project "perception-with-intent" \
             --region "us-central1" \
             --staging_bucket "gs://perception-staging" \
