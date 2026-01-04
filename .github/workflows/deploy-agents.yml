@@ -66,12 +66,8 @@ jobs:
             --region=us-central1 \
             --staging_bucket=gs://perception-staging \
             --display_name="Perception Root Orchestrator" \
-            perception_app/perception_agent/agents/agent_0_orchestrator.yaml \
             --trace_to_cloud \
-            --cpu=2 \
-            --memory=2Gi \
-            --min_instances=0 \
-            --max_instances=5
+            perception_app/perception_agent/agents/agent_0_orchestrator.yaml
 
       - name: Deploy Agent 1 (Source Harvester)
         run: |
@@ -80,12 +76,8 @@ jobs:
             --region=us-central1 \
             --staging_bucket=gs://perception-staging \
             --display_name="Perception Source Harvester" \
-            perception_app/perception_agent/agents/agent_1_source_harvester.yaml \
             --trace_to_cloud \
-            --cpu=1 \
-            --memory=1Gi \
-            --min_instances=0 \
-            --max_instances=3
+            perception_app/perception_agent/agents/agent_1_source_harvester.yaml
 
       - name: Deployment Summary
         run: |
