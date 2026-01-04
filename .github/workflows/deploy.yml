@@ -34,7 +34,7 @@ jobs:
           echo "Region:           ${{ env.REGION }}"
           echo "Staging Bucket:   gs://perception-staging"
           echo "Display Name:     Perception Intelligence System"
-          echo "Agent YAML:       perception_app/perception_agent/agents/agent_0_orchestrator.yaml"
+          echo "Agent Dir:        perception_app/perception_agent/agents/agent_0_orchestrator"
           echo "Docker Registry:  ${{ env.ARTIFACT_REGISTRY }}/${{ env.PROJECT_ID }}/perception-agents"
           echo "=========================================="
 
@@ -84,7 +84,7 @@ jobs:
             --staging_bucket=gs://perception-staging \
             --display_name="Perception Intelligence System" \
             --trace_to_cloud \
-            perception_app/perception_agent/agents/agent_0_orchestrator.yaml
+            perception_app/perception_agent/agents/agent_0_orchestrator
 
       - name: Verify deployment
         run: |

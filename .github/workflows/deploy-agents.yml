@@ -29,8 +29,8 @@ jobs:
           echo "Region:           us-central1"
           echo "Staging Bucket:   gs://perception-staging"
           echo "Agent Count:      2 (Agent 0, Agent 1)"
-          echo "Agent 0 YAML:     perception_app/perception_agent/agents/agent_0_orchestrator.yaml"
-          echo "Agent 1 YAML:     perception_app/perception_agent/agents/agent_1_source_harvester.yaml"
+          echo "Agent 0 Dir:      perception_app/perception_agent/agents/agent_0_orchestrator"
+          echo "Agent 1 Dir:      perception_app/perception_agent/agents/agent_1_source_harvester"
           echo "=========================================="
 
       - name: Checkout code
@@ -67,7 +67,7 @@ jobs:
             --staging_bucket=gs://perception-staging \
             --display_name="Perception Root Orchestrator" \
             --trace_to_cloud \
-            perception_app/perception_agent/agents/agent_0_orchestrator.yaml
+            perception_app/perception_agent/agents/agent_0_orchestrator
 
       - name: Deploy Agent 1 (Source Harvester)
         run: |
@@ -77,7 +77,7 @@ jobs:
             --staging_bucket=gs://perception-staging \
             --display_name="Perception Source Harvester" \
             --trace_to_cloud \
-            perception_app/perception_agent/agents/agent_1_source_harvester.yaml
+            perception_app/perception_agent/agents/agent_1_source_harvester
 
       - name: Deployment Summary
         run: |
