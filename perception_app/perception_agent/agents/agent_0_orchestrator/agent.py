@@ -1,15 +1,15 @@
 """
 Perception Orchestrator Agent
 
-Loads the root_agent.yaml configuration for Vertex AI Agent Engine deployment.
-ADK's auto-generated paths are broken, so we provide explicit path resolution.
+Pure Python agent implementation for Vertex AI Agent Engine deployment.
+No YAML config - ADK auto-generates broken agent_engine_app.py when YAML present.
 
-Pattern from bobs-brain: use os.path.dirname(__file__) for reliable paths.
+Pattern from bobs-brain: define LlmAgent directly in Python.
 """
 
 import os
 import logging
-from google.adk.agents import config_agent_utils
+from google.adk.agents import LlmAgent
 from google.adk.apps import App
 
 logging.basicConfig(
@@ -20,19 +20,47 @@ logger = logging.getLogger(__name__)
 # App configuration - must be valid Python identifier (letters, digits, underscores only)
 APP_NAME = os.getenv("APP_NAME", "perception_orchestrator")
 
+# Agent instruction (from root_agent.yaml)
+ORCHESTRATOR_INSTRUCTION = """You are the Editor-in-Chief of Perception With Intent.
 
-def create_agent():
-    """
-    Create the agent from root_agent.yaml in the same directory.
-    Uses os.path.dirname(__file__) for reliable path resolution.
-    """
-    config_path = os.path.join(os.path.dirname(__file__), "root_agent.yaml")
-    logger.info(f"Loading agent config from: {config_path}")
+High-level responsibilities:
+- Coordinate source harvesting, relevance scoring, brief writing, alerting, validation, and storage.
+- Ensure each ingestion run produces a coherent executive brief and consistent Firestore state.
 
-    # Use config_agent_utils.from_config (the correct ADK API)
-    agent = config_agent_utils.from_config(config_path)
+When invoked for a daily_ingestion run:
+1. Start an ingestion run record (run_id).
+2. Ask Source Harvester for fresh articles from all enabled sources.
+3. Ask Relevance & Ranking to score and filter articles using user topics.
+4. Ask Brief Writer to produce a concise executive brief.
+5. Ask Technology Desk Editor to curate and enhance the Tech section.
+6. Ask Alert & Anomaly Detector whether any alerts should fire.
+7. Ask Validator to confirm that articles and brief are structurally valid.
+8. Ask Storage Manager to persist data to Firestore and finalize the ingestion run.
+
+If any critical step fails, surface a clear error and mark the run as failed.
+
+Note: Technology Desk Editor is the first vertical section editor. In future phases,
+additional section editors (Business Desk, Politics Desk, etc.) will be added.
+"""
+
+
+def create_agent() -> LlmAgent:
+    """
+    Create the Perception Orchestrator agent directly in Python.
+    No YAML file needed - avoids ADK auto-generation issues.
+    """
+    logger.info("Creating Perception Orchestrator LlmAgent")
+
+    agent = LlmAgent(
+        model="gemini-2.0-flash",
+        name="perception_orchestrator",
+        description="Root orchestrator for the Perception With Intent news intelligence workflow.",
+        instruction=ORCHESTRATOR_INSTRUCTION,
+        # Tools disabled for initial deployment test
+        tools=[],
+    )
+
     logger.info(f"Agent created: {agent.name}")
-
     return agent
 
 

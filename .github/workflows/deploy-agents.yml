@@ -76,7 +76,6 @@ jobs:
             --region "us-central1" \
             --staging_bucket "gs://perception-staging" \
             --display_name "Perception Orchestrator" \
-            --adk_app agent_engine_app \
             --trace_to_cloud
 
       - name: Deployment Summary
