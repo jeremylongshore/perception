@@ -17,8 +17,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# App configuration
-APP_NAME = os.getenv("APP_NAME", "perception-orchestrator")
+# App configuration - must be valid Python identifier (letters, digits, underscores only)
+APP_NAME = os.getenv("APP_NAME", "perception_orchestrator")
 
 
 def create_agent():
